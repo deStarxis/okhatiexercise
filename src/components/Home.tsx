@@ -1,6 +1,7 @@
 import { Card, CardActions, Button, Typography } from "@material-ui/core";
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -29,27 +30,35 @@ function Home() {
     window.location.href = "/login";
   };
   const classes = useStyles();
+  const loginToken = localStorage.getItem("loginToken");
+
   return (
-    <div>
-      <Card className={classes.container}>
-        <CardActions>
-          <Typography variant="h6" display="block" gutterBottom>
-            Welcome to Home Page
-          </Typography>
-        </CardActions>
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.loginBtn}
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
+    <>
+      {loginToken === null ? (
+        <Redirect to="/login" />
+      ) : (
+        <div>
+          <Card className={classes.container}>
+            <CardActions>
+              <Typography variant="h6" display="block" gutterBottom>
+                Welcome to Home Page
+              </Typography>
+            </CardActions>
+            <CardActions>
+              <Button
+                variant="contained"
+                size="large"
+                color="secondary"
+                className={classes.loginBtn}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+      )}
+    </>
   );
 }
 

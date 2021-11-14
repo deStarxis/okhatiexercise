@@ -8,6 +8,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -105,54 +106,62 @@ const Login = () => {
     return isValid;
   };
 
+  const loginToken = localStorage.getItem("loginToken");
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
-      <Card className={classes.card}>
-        <CardHeader className={classes.header} title="Login App" />
-        <CardContent>
-          <div>
-            <TextField
-              error={!errorMsg.emailErr ? false : true}
-              helperText={errorMsg.emailErr}
-              fullWidth
-              id="email"
-              type="email"
-              label="email"
-              placeholder="email"
-              margin="normal"
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <TextField
-              error={!errorMsg.passwordErr ? false : true}
-              helperText={errorMsg.passwordErr}
-              fullWidth
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Password"
-              margin="normal"
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.loginBtn}
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
-        </CardActions>
-        <CardActions>
-          <Typography variant="caption" display="block" gutterBottom>
-            {errorMsg.loginErr}
-          </Typography>
-        </CardActions>
-      </Card>
-    </form>
+    <>
+      {!loginToken ? (
+        <form className={classes.container} noValidate autoComplete="off">
+          <Card className={classes.card}>
+            <CardHeader className={classes.header} title="Login App" />
+            <CardContent>
+              <div>
+                <TextField
+                  error={!errorMsg.emailErr ? false : true}
+                  helperText={errorMsg.emailErr}
+                  fullWidth
+                  id="email"
+                  type="email"
+                  label="email"
+                  placeholder="email"
+                  margin="normal"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <TextField
+                  error={!errorMsg.passwordErr ? false : true}
+                  helperText={errorMsg.passwordErr}
+                  fullWidth
+                  id="password"
+                  type="password"
+                  label="Password"
+                  placeholder="Password"
+                  margin="normal"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </div>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                size="large"
+                color="secondary"
+                className={classes.loginBtn}
+                onClick={handleLogin}
+              >
+                Login
+              </Button>
+            </CardActions>
+            <CardActions>
+              <Typography variant="caption" display="block" gutterBottom>
+                {errorMsg.loginErr}
+              </Typography>
+            </CardActions>
+          </Card>
+        </form>
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
   );
 };
 
